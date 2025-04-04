@@ -160,48 +160,224 @@
                 </form>
             </div>
             <div id="admin-dashboard" style="display: none;">
-                <div class="admin-tabs">
-                    <button class="tab-btn active" data-tab="products">Products</button>
-                    <button class="tab-btn" data-tab="pages">Pages</button>
-                    <button class="tab-btn" data-tab="orders">Orders</button>
-                    <button class="tab-btn" data-tab="settings">Settings</button>
+                <div class="admin-header">
+                    <div class="admin-welcome">
+                        <h2>Welcome, Admin</h2>
+                        <p class="date-time"></p>
+                    </div>
+                    <div class="quick-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-shopping-cart"></i>
+                            <h3>Total Orders</h3>
+                            <p class="stat-number">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-dollar-sign"></i>
+                            <h3>Revenue</h3>
+                            <p class="stat-number">$0.00</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-box"></i>
+                            <h3>Products</h3>
+                            <p class="stat-number">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Customers</h3>
+                            <p class="stat-number">0</p>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="dashboard"><i class="fas fa-home"></i> Dashboard</button>
+                    <button class="tab-btn" data-tab="products"><i class="fas fa-box"></i> Products</button>
+                    <button class="tab-btn" data-tab="orders"><i class="fas fa-shopping-cart"></i> Orders</button>
+                    <button class="tab-btn" data-tab="inventory"><i class="fas fa-warehouse"></i> Inventory</button>
+                    <button class="tab-btn" data-tab="customers"><i class="fas fa-users"></i> Customers</button>
+                    <button class="tab-btn" data-tab="analytics"><i class="fas fa-chart-bar"></i> Analytics</button>
+                    <button class="tab-btn" data-tab="marketing"><i class="fas fa-bullhorn"></i> Marketing</button>
+                    <button class="tab-btn" data-tab="settings"><i class="fas fa-cog"></i> Settings</button>
+                </div>
+
+                <!-- Products Tab -->
                 <div class="tab-content" id="products-tab">
-                    <button class="add-product-btn">Add New Product</button>
+                    <div class="tab-header">
+                        <h3>Product Management</h3>
+                        <button class="add-product-btn"><i class="fas fa-plus"></i> Add New Product</button>
+                    </div>
+                    <div class="product-tools">
+                        <div class="search-bar">
+                            <input type="text" placeholder="Search products...">
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                        <div class="barcode-scanner">
+                            <button class="scan-btn"><i class="fas fa-barcode"></i> Scan Barcode</button>
+                            <input type="text" placeholder="Or enter barcode manually">
+                        </div>
+                        <div class="bulk-actions">
+                            <button class="import-btn"><i class="fas fa-file-import"></i> Import Products</button>
+                            <button class="export-btn"><i class="fas fa-file-export"></i> Export Products</button>
+                        </div>
+                    </div>
+                    <div class="product-filters">
+                        <select class="category-filter">
+                            <option value="">All Categories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="fashion">Fashion</option>
+                            <option value="home">Home & Living</option>
+                        </select>
+                        <select class="stock-filter">
+                            <option value="">All Stock Status</option>
+                            <option value="in-stock">In Stock</option>
+                            <option value="low-stock">Low Stock</option>
+                            <option value="out-of-stock">Out of Stock</option>
+                        </select>
+                        <select class="sort-filter">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="price-low">Price: Low to High</option>
+                        </select>
+                    </div>
                     <div class="product-list">
                         <!-- Products will be listed here -->
                     </div>
                 </div>
-                <div class="tab-content" id="pages-tab" style="display: none;">
-                    <div class="page-builder">
-                        <div class="page-builder-header">
-                            <h3>Create New Page</h3>
-                            <button class="add-page-btn">Add Page</button>
-                        </div>
-                        <form class="page-builder-form" id="page-builder-form">
-                            <input type="text" placeholder="Page Title" required>
-                            <input type="text" placeholder="Page URL Slug" required>
-                            <textarea placeholder="Page Content (HTML supported)" required></textarea>
-                            <button type="submit">Create Page</button>
-                        </form>
-                        <div class="page-list">
-                            <!-- Custom pages will be listed here -->
+
+                <!-- Inventory Tab -->
+                <div class="tab-content" id="inventory-tab" style="display: none;">
+                    <div class="tab-header">
+                        <h3>Inventory Management</h3>
+                        <div class="inventory-actions">
+                            <button class="stock-alert-btn"><i class="fas fa-bell"></i> Stock Alerts</button>
+                            <button class="reorder-btn"><i class="fas fa-sync"></i> Auto Reorder</button>
                         </div>
                     </div>
+                    <div class="inventory-grid">
+                        <!-- Inventory items will be listed here -->
+                    </div>
                 </div>
+
+                <!-- Orders Tab -->
                 <div class="tab-content" id="orders-tab" style="display: none;">
+                    <div class="tab-header">
+                        <h3>Order Management</h3>
+                        <div class="order-filters">
+                            <select class="status-filter">
+                                <option value="">All Orders</option>
+                                <option value="pending">Pending</option>
+                                <option value="processing">Processing</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <input type="date" class="date-filter">
+                            <button class="print-orders"><i class="fas fa-print"></i> Print Orders</button>
+                        </div>
+                    </div>
                     <div class="order-list">
                         <!-- Orders will be listed here -->
                     </div>
                 </div>
+
+                <!-- Analytics Tab -->
+                <div class="tab-content" id="analytics-tab" style="display: none;">
+                    <div class="analytics-header">
+                        <h3>Business Analytics</h3>
+                        <div class="date-range">
+                            <button>Today</button>
+                            <button>Week</button>
+                            <button>Month</button>
+                            <button>Year</button>
+                            <input type="date"> to <input type="date">
+                        </div>
+                    </div>
+                    <div class="analytics-grid">
+                        <div class="chart-container">
+                            <h4>Sales Overview</h4>
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4>Top Products</h4>
+                            <canvas id="productsChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4>Customer Demographics</h4>
+                            <canvas id="demographicsChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4>Traffic Sources</h4>
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Marketing Tab -->
+                <div class="tab-content" id="marketing-tab" style="display: none;">
+                    <div class="marketing-tools">
+                        <div class="tool-card">
+                            <h4>Promotions</h4>
+                            <button class="create-promo-btn"><i class="fas fa-tag"></i> Create Promotion</button>
+                            <button class="manage-promos-btn"><i class="fas fa-tasks"></i> Manage Promotions</button>
+                        </div>
+                        <div class="tool-card">
+                            <h4>Email Marketing</h4>
+                            <button class="create-campaign-btn"><i class="fas fa-envelope"></i> Create Campaign</button>
+                            <button class="view-subscribers-btn"><i class="fas fa-users"></i> View Subscribers</button>
+                        </div>
+                        <div class="tool-card">
+                            <h4>Social Media</h4>
+                            <button class="schedule-post-btn"><i class="fas fa-calendar"></i> Schedule Posts</button>
+                            <button class="analytics-btn"><i class="fas fa-chart-line"></i> View Analytics</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
                 <div class="tab-content" id="settings-tab" style="display: none;">
-                    <form id="settings-form">
-                        <h3>Store Settings</h3>
-                        <input type="text" placeholder="Store Name">
-                        <input type="email" placeholder="Store Email">
-                        <textarea placeholder="Store Description"></textarea>
-                        <button type="submit">Save Settings</button>
-                    </form>
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h4>Store Settings</h4>
+                            <form id="store-settings-form">
+                                <input type="text" placeholder="Store Name">
+                                <input type="email" placeholder="Store Email">
+                                <input type="tel" placeholder="Store Phone">
+                                <textarea placeholder="Store Description"></textarea>
+                                <button type="submit">Save Store Settings</button>
+                            </form>
+                        </div>
+                        <div class="settings-card">
+                            <h4>Payment Settings</h4>
+                            <form id="payment-settings-form">
+                                <div class="payment-methods">
+                                    <label><input type="checkbox" checked> Credit Card</label>
+                                    <label><input type="checkbox" checked> PayPal</label>
+                                    <label><input type="checkbox"> Apple Pay</label>
+                                    <label><input type="checkbox"> Google Pay</label>
+                                </div>
+                                <button type="submit">Save Payment Settings</button>
+                            </form>
+                        </div>
+                        <div class="settings-card">
+                            <h4>Shipping Settings</h4>
+                            <form id="shipping-settings-form">
+                                <div class="shipping-zones">
+                                    <button type="button" class="add-zone-btn">Add Shipping Zone</button>
+                                </div>
+                                <button type="submit">Save Shipping Settings</button>
+                            </form>
+                        </div>
+                        <div class="settings-card">
+                            <h4>Tax Settings</h4>
+                            <form id="tax-settings-form">
+                                <div class="tax-rates">
+                                    <button type="button" class="add-tax-btn">Add Tax Rate</button>
+                                </div>
+                                <button type="submit">Save Tax Settings</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -245,6 +421,8 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/admin.js"></script>
 </body>
