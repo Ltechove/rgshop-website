@@ -97,41 +97,280 @@ class ShoppingCart {
 // Initialize the shopping cart
 const cart = new ShoppingCart();
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
+document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         });
     });
-});
 
-// Form submission handling
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Thank you for your message! We will get back to you soon.');
-        this.reset();
-    });
-}
+    // Navbar scroll effect
+    const navbar = document.querySelector('.navbar');
+    let lastScroll = 0;
 
-// Scroll to top button
-window.addEventListener('scroll', function() {
-    const scrollTop = document.querySelector('.scroll-top');
-    if (window.pageYOffset > 300) {
-        if (!scrollTop) {
-            const button = document.createElement('button');
-            button.className = 'scroll-top';
-            button.innerHTML = '↑';
-            button.onclick = function() {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            };
-            document.body.appendChild(button);
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+
+        // Add/remove scrolled class for navbar styling
+        if (currentScroll > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
         }
-    } else if (scrollTop) {
-        scrollTop.remove();
+
+        lastScroll = currentScroll;
+    });
+
+    // Scroll animations for elements
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    fadeElements.forEach(element => {
+        observer.observe(element);
+    });
+
+    // Cart functionality
+    const cartIcon = document.querySelector('.cart-icon');
+    const cartDropdown = document.querySelector('.cart-dropdown');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    let cartItems = [];
+    let cartTotal = 0;
+
+    // Show/hide cart dropdown
+    if (cartIcon) {
+        cartIcon.addEventListener('mouseenter', () => {
+            cartDropdown.style.display = 'block';
+        });
+
+        cartDropdown.addEventListener('mouseleave', () => {
+            cartDropdown.style.display = 'none';
+        });
+    }
+
+    // Add to cart functionality
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const product = e.target.closest('.product-card');
+            if (product) {
+                const productData = {
+                    id: product.dataset.id,
+                    name: product.querySelector('h3').textContent,
+                    price: parseFloat(product.querySelector('.product-price').textContent.replace('$', '')),
+                    image: product.querySelector('.product-image').src
+                };
+
+                addToCart(productData);
+                updateCartUI();
+                showNotification('Product added to cart!');
+            }
+        });
+    });
+
+    function addToCart(product) {
+        const existingItem = cartItems.find(item => item.id === product.id);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cartItems.push({
+                ...product,
+                quantity: 1
+            });
+        }
+
+        updateCartCount();
+        calculateTotal();
+    }
+
+    function updateCartUI() {
+        const cartItemsContainer = document.querySelector('.cart-items');
+        if (!cartItemsContainer) return;
+
+        cartItemsContainer.innerHTML = '';
+        
+        cartItems.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.className = 'cart-item';
+            itemElement.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <h4 class="cart-item-title">${item.name}</h4>
+                    <p class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+                    <div class="cart-item-quantity">
+                        <button class="quantity-btn minus">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                </div>
+                <button class="remove-item"><i class="fas fa-times"></i></button>
+            `;
+
+            // Add event listeners for quantity buttons and remove button
+            const minusBtn = itemElement.querySelector('.minus');
+            const plusBtn = itemElement.querySelector('.plus');
+            const removeBtn = itemElement.querySelector('.remove-item');
+
+            minusBtn.addEventListener('click', () => updateQuantity(item.id, -1));
+            plusBtn.addEventListener('click', () => updateQuantity(item.id, 1));
+            removeBtn.addEventListener('click', () => removeFromCart(item.id));
+
+            cartItemsContainer.appendChild(itemElement);
+        });
+    }
+
+    function updateQuantity(productId, change) {
+        const item = cartItems.find(item => item.id === productId);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity < 1) {
+                removeFromCart(productId);
+            } else {
+                updateCartUI();
+                calculateTotal();
+            }
+        }
+    }
+
+    function removeFromCart(productId) {
+        cartItems = cartItems.filter(item => item.id !== productId);
+        updateCartUI();
+        updateCartCount();
+        calculateTotal();
+    }
+
+    function updateCartCount() {
+        const cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+            const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+    }
+
+    function calculateTotal() {
+        cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const totalElement = document.querySelector('.total-amount');
+        if (totalElement) {
+            totalElement.textContent = cartTotal.toFixed(2);
+        }
+    }
+
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        // Trigger animation
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 3000);
+    }
+
+    // Product filtering and sorting
+    const categoryFilter = document.getElementById('category-filter');
+    const sortFilter = document.getElementById('sort-filter');
+    const productGrid = document.querySelector('.product-grid');
+
+    if (categoryFilter && sortFilter && productGrid) {
+        const filterProducts = () => {
+            const category = categoryFilter.value;
+            const sortBy = sortFilter.value;
+            const products = Array.from(productGrid.children);
+
+            products.forEach(product => {
+                const productCategory = product.dataset.category;
+                product.style.display = (category === 'all' || productCategory === category) ? 'block' : 'none';
+            });
+
+            const visibleProducts = products.filter(p => p.style.display !== 'none');
+            sortProducts(visibleProducts, sortBy);
+        };
+
+        const sortProducts = (products, sortBy) => {
+            products.sort((a, b) => {
+                const priceA = parseFloat(a.dataset.price);
+                const priceB = parseFloat(b.dataset.price);
+                const dateA = new Date(a.dataset.date);
+                const dateB = new Date(b.dataset.date);
+
+                switch (sortBy) {
+                    case 'price-low':
+                        return priceA - priceB;
+                    case 'price-high':
+                        return priceB - priceA;
+                    case 'newest':
+                        return dateB - dateA;
+                    default:
+                        return 0;
+                }
+            });
+
+            products.forEach(product => {
+                productGrid.appendChild(product);
+            });
+        };
+
+        categoryFilter.addEventListener('change', filterProducts);
+        sortFilter.addEventListener('change', filterProducts);
+    }
+
+    // Newsletter form submission
+    const newsletterForm = document.querySelector('.newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            
+            // Here you would typically send this to your backend
+            console.log('Newsletter subscription:', email);
+            showNotification('Thank you for subscribing to our newsletter!');
+            this.reset();
+        });
+    }
+
+    // Contact form submission
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            // Here you would typically send this to your backend
+            console.log('Contact form submission:', Object.fromEntries(formData));
+            showNotification('Thank you for your message. We will get back to you soon!');
+            this.reset();
+        });
     }
 });
 
