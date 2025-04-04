@@ -6,6 +6,7 @@
     <title>RGshop.ca - Your Online Shopping Destination</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -18,6 +19,7 @@
                 <li><a href="#products">Products</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="#admin" class="admin-link"><i class="fas fa-lock"></i> Admin</a></li>
             </ul>
             <div class="cart-container">
                 <div class="cart-icon">
@@ -30,7 +32,7 @@
                     </div>
                     <div class="cart-total">
                         <p>Total: $<span class="total-amount">0.00</span></p>
-                        <button class="checkout-btn">Checkout</button>
+                        <button class="checkout-btn">Checkout with Payable</button>
                     </div>
                 </div>
             </div>
@@ -46,36 +48,169 @@
             </div>
         </section>
 
-        <section id="products">
-            <h2>Our Products</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="images/product1.jpg" alt="Product 1" class="product-image">
-                    <div class="product-info">
-                        <h3>Product Name</h3>
-                        <p class="product-price">$99.99</p>
-                        <button class="add-to-cart" data-id="1">Add to Cart</button>
-                    </div>
+        <section id="featured-categories">
+            <h2>Shop by Category</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <img src="images/category1.jpg" alt="Category 1">
+                    <h3>Electronics</h3>
                 </div>
-                <!-- More product cards will be added here -->
+                <div class="category-card">
+                    <img src="images/category2.jpg" alt="Category 2">
+                    <h3>Fashion</h3>
+                </div>
+                <div class="category-card">
+                    <img src="images/category3.jpg" alt="Category 3">
+                    <h3>Home & Living</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="products">
+            <div class="products-header">
+                <h2>Our Products</h2>
+                <div class="product-filters">
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="home">Home & Living</option>
+                    </select>
+                    <select id="sort-filter">
+                        <option value="newest">Newest First</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+            <div class="product-grid">
+                <!-- Products will be loaded dynamically -->
             </div>
         </section>
 
         <section id="about">
             <h2>About Us</h2>
-            <p>Welcome to RGshop.ca, your trusted online shopping destination. We are committed to providing quality products and excellent customer service.</p>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="images/about.jpg" alt="About Us">
+                </div>
+                <div class="about-text">
+                    <p>Welcome to RGshop.ca, your trusted online shopping destination. We are committed to providing quality products and excellent customer service.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-truck"></i>
+                            <h3>Fast Delivery</h3>
+                            <p>Quick and reliable shipping</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Secure Payment</h3>
+                            <p>Safe transactions with Payable</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-headset"></i>
+                            <h3>24/7 Support</h3>
+                            <p>Always here to help</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="contact">
             <h2>Contact Us</h2>
-            <form class="contact-form">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="Your Message" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Address</h3>
+                        <p>123 Shopping Street, Montreal, QC</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <h3>Phone</h3>
+                        <p>+1 (514) 123-4567</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>contact@rgshop.ca</p>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
         </section>
     </main>
+
+    <!-- Admin Panel Modal -->
+    <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Panel</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="admin-login" id="admin-login">
+                    <h3>Login</h3>
+                    <form id="admin-login-form">
+                        <input type="text" placeholder="Username" required>
+                        <input type="password" placeholder="Password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+                <div class="admin-dashboard" id="admin-dashboard" style="display: none;">
+                    <div class="admin-tabs">
+                        <button class="tab-btn active" data-tab="products">Products</button>
+                        <button class="tab-btn" data-tab="pages">Pages</button>
+                        <button class="tab-btn" data-tab="orders">Orders</button>
+                        <button class="tab-btn" data-tab="settings">Settings</button>
+                    </div>
+                    <div class="tab-content" id="products-tab">
+                        <button class="add-product-btn">Add New Product</button>
+                        <div class="product-list">
+                            <!-- Products will be listed here -->
+                        </div>
+                    </div>
+                    <div class="tab-content" id="pages-tab" style="display: none;">
+                        <div class="page-builder">
+                            <div class="page-builder-header">
+                                <h3>Create New Page</h3>
+                                <button class="add-page-btn">Add Page</button>
+                            </div>
+                            <form class="page-builder-form" id="page-builder-form">
+                                <input type="text" placeholder="Page Title" required>
+                                <input type="text" placeholder="Page URL Slug" required>
+                                <textarea placeholder="Page Content (HTML supported)" required></textarea>
+                                <button type="submit">Create Page</button>
+                            </form>
+                            <div class="page-list">
+                                <!-- Custom pages will be listed here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="orders-tab" style="display: none;">
+                        <div class="order-list">
+                            <!-- Orders will be listed here -->
+                        </div>
+                    </div>
+                    <div class="tab-content" id="settings-tab" style="display: none;">
+                        <form id="settings-form">
+                            <h3>Store Settings</h3>
+                            <input type="text" placeholder="Store Name">
+                            <input type="email" placeholder="Store Email">
+                            <textarea placeholder="Store Description"></textarea>
+                            <button type="submit">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -99,6 +234,13 @@
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
                 </div>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address">
+                    <button type="submit">Subscribe</button>
+                </form>
             </div>
         </div>
         <div class="footer-bottom">
