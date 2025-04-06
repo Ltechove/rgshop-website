@@ -28,6 +28,7 @@ body {
 /* Enhanced Header and Navigation */
 .navbar {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 5%;
@@ -204,7 +205,7 @@ body {
 /* Enhanced Hero Section */
 #hero {
     height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../images/hero-bg.jpg');
+    background: url('../images/hero-bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -219,9 +220,21 @@ body {
     overflow: hidden;
 }
 
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.8), rgba(52, 152, 219, 0.7));
+    z-index: 1;
+}
+
 .hero-content {
     max-width: 800px;
     animation: fadeInUp 1s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .hero-content h2 {
@@ -232,6 +245,23 @@ body {
     letter-spacing: 2px;
 }
 
+.hero-content .highlight {
+    color: #3498db;
+    position: relative;
+    display: inline-block;
+}
+
+.hero-content .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background-color: rgba(231, 76, 60, 0.5);
+    z-index: -1;
+}
+
 .hero-content p {
     font-size: 1.3rem;
     margin-bottom: 2rem;
@@ -239,11 +269,15 @@ body {
     opacity: 0.9;
 }
 
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
 .cta-button {
     padding: 1.2rem 3rem;
     font-size: 1.1rem;
-    background: linear-gradient(45deg, var(--primary-color), #2980b9);
-    color: white;
     border: none;
     border-radius: 30px;
     cursor: pointer;
@@ -252,6 +286,19 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.cta-button.primary {
+    background: linear-gradient(45deg, var(--primary-color), #2980b9);
+    color: white;
+}
+
+.cta-button.secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
 }
 
 .cta-button::before {
@@ -616,6 +663,40 @@ body {
 .feature p {
     color: #666;
     font-size: 0.9rem;
+}
+
+/* Simple Section */
+.simple-section {
+    padding: 5rem 5%;
+    background-color: #f5f7fa;
+    text-align: center;
+}
+
+.simple-section h2 {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.simple-cta {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.simple-cta p {
+    margin-bottom: 2rem;
+    line-height: 1.6;
 }
 
 /* Enhanced Contact Section */
@@ -1494,7 +1575,62 @@ footer::before {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-content h2 {
+        font-size: 3rem;
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .simple-section h2 {
+        font-size: 2rem;
+    }
+
+    .simple-cta {
+        padding: 1.5rem;
+    }
+
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 768px) {
+    /* Simple Mobile Navigation */
+    .navbar {
+        padding: 1rem;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+        background: var(--primary-color);
+        border: none;
+        font-size: 1rem;
+        color: white;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 0.5rem 0;
+    }
+
     .admin-tabs {
         flex-direction: column;
     }
@@ -1557,4 +1693,4 @@ footer::before {
 .quantity-btn:hover {
     background: var(--primary-color);
     color: white;
-} 
+}

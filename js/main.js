@@ -7,7 +7,7 @@ class ShoppingCart {
         this.cartItems = document.querySelector('.cart-items');
         this.totalAmount = document.querySelector('.total-amount');
         this.checkoutBtn = document.querySelector('.checkout-btn');
-        
+
         this.initializeEventListeners();
     }
 
@@ -98,6 +98,16 @@ class ShoppingCart {
 const cart = new ShoppingCart();
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Simple Mobile Menu Toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -131,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Scroll animations for elements
     const fadeElements = document.querySelectorAll('.fade-in');
-    
+
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -190,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function addToCart(product) {
         const existingItem = cartItems.find(item => item.id === product.id);
-        
+
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
@@ -209,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!cartItemsContainer) return;
 
         cartItemsContainer.innerHTML = '';
-        
+
         cartItems.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.className = 'cart-item';
@@ -280,14 +290,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const notification = document.createElement('div');
         notification.className = 'notification';
         notification.textContent = message;
-        
+
         document.body.appendChild(notification);
-        
+
         // Trigger animation
         setTimeout(() => {
             notification.classList.add('show');
         }, 100);
-        
+
         // Remove notification after 3 seconds
         setTimeout(() => {
             notification.classList.remove('show');
@@ -351,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
         newsletterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const email = this.querySelector('input[type="email"]').value;
-            
+
             // Here you would typically send this to your backend
             console.log('Newsletter subscription:', email);
             showNotification('Thank you for subscribing to our newsletter!');
@@ -365,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
-            
+
             // Here you would typically send this to your backend
             console.log('Contact form submission:', Object.fromEntries(formData));
             showNotification('Thank you for your message. We will get back to you soon!');
@@ -429,10 +439,10 @@ const tabContents = document.querySelectorAll('.tab-content');
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const tabId = btn.dataset.tab;
-        
+
         tabBtns.forEach(b => b.classList.remove('active'));
         tabContents.forEach(c => c.style.display = 'none');
-        
+
         btn.classList.add('active');
         document.getElementById(`${tabId}-tab`).style.display = 'block';
     });
@@ -450,7 +460,7 @@ function addProduct(product) {
 }
 
 function editProduct(id, updatedProduct) {
-    products = products.map(product => 
+    products = products.map(product =>
         product.id === id ? { ...product, ...updatedProduct } : product
     );
     localStorage.setItem('products', JSON.stringify(products));
@@ -467,7 +477,7 @@ function deleteProduct(id) {
 function displayProducts() {
     const productList = document.querySelector('.product-list');
     const publicProductGrid = document.querySelector('.product-grid');
-    
+
     // Admin product list
     if (productList) {
         productList.innerHTML = products.map(product => `
@@ -565,7 +575,7 @@ function updateNavigation() {
     const customPages = pages.map(page => `
         <li><a href="#${page.slug}">${page.title}</a></li>
     `).join('');
-    
+
     // Insert custom pages before the Admin link
     const adminLink = navLinks.querySelector('.admin-link').parentElement;
     adminLink.insertAdjacentHTML('beforebegin', customPages);
@@ -593,7 +603,7 @@ function updateCartCount() {
 function updateCartDropdown() {
     const cartItems = document.querySelector('.cart-items');
     const totalAmount = document.querySelector('.total-amount');
-    
+
     cartItems.innerHTML = cart.map(item => `
         <div class="cart-item">
             <img src="${item.image}" alt="${item.name}">
@@ -683,7 +693,7 @@ function editPage(id) {
             slug: e.target.elements[1].value,
             content: e.target.elements[2].value
         };
-        
+
         pages = pages.map(p => p.id === id ? { ...p, ...updatedPage } : p);
         localStorage.setItem('pages', JSON.stringify(pages));
         displayPages();
@@ -717,7 +727,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
     updateCartDropdown();
     updateNavigation();
-    
+
     // Handle dynamic page content
     window.addEventListener('hashchange', handlePageNavigation);
     handlePageNavigation();
@@ -748,4 +758,4 @@ function handlePageNavigation() {
 
         main.appendChild(customPageSection);
     }
-} 
+}
