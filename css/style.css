@@ -132,6 +132,11 @@ body {
     font-size: 0.9rem;
 }
 
+/* Mobile Menu Button - Hidden by default */
+.mobile-menu-btn {
+    display: none;
+}
+
 /* Cart Styles */
 .cart-container {
     position: relative;
@@ -1828,16 +1833,26 @@ footer::before {
     /* Simple Mobile Navigation */
     .navbar {
         padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logo {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
     }
 
     .mobile-menu-btn {
         display: block;
         background: var(--primary-gradient);
         border: none;
-        font-size: 1rem;
+        font-size: 0.9rem;
         color: white;
         cursor: pointer;
-        padding: 0.7rem 1.2rem;
+        padding: 0.5rem 1rem;
         border-radius: 50px;
         box-shadow: var(--button-shadow);
         transition: var(--bounce);
@@ -1853,12 +1868,13 @@ footer::before {
         flex-direction: column;
         width: 100%;
         text-align: center;
-        margin-top: 1.5rem;
+        margin-top: 0.5rem;
         background: white;
-        padding: 1.5rem;
-        border-radius: 15px;
+        padding: 1rem;
+        border-radius: 10px;
         box-shadow: var(--card-shadow);
-        animation: fadeIn 0.5s ease;
+        animation: fadeIn 0.3s ease;
+        overflow: hidden;
     }
 
     @keyframes fadeIn {
@@ -1876,17 +1892,19 @@ footer::before {
 
     .nav-links a {
         justify-content: center;
-        padding: 0.8rem 1.5rem;
+        padding: 0.7rem 1rem;
+        margin: 0.2rem 0;
         background: var(--light-gray);
-        border-radius: 50px;
-        transition: var(--bounce);
+        border-radius: 8px;
+        transition: var(--transition);
+        font-size: 0.95rem;
     }
 
     .nav-links a:hover {
         background: var(--primary-gradient);
         color: white;
-        transform: translateY(-3px);
-        box-shadow: var(--button-shadow);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
     }
 
     .nav-links a:hover::after {

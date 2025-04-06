@@ -14,6 +14,9 @@
         <nav class="navbar">
             <div class="logo">
                 <h1>RGshop.ca</h1>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i> Menu
+                </button>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -102,7 +105,7 @@
                     <li><strong>Address:</strong> [CONTACT_ADDRESS]</li>
                 </ul>
             </section>
-            
+
             <div class="admin-actions">
                 <a href="privacy-policies.html" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Back to All Policies
@@ -152,15 +155,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const policyId = urlParams.get('id');
-            
+
             if (policyId) {
                 const editBtn = document.querySelector('.edit-policy-btn');
                 const deleteBtn = document.querySelector('.delete-policy-btn');
-                
+
                 if (editBtn) {
                     editBtn.href = `create-privacy-policy.html?edit=${policyId}`;
                 }
-                
+
                 if (deleteBtn) {
                     deleteBtn.addEventListener('click', function(e) {
                         e.preventDefault();
